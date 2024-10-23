@@ -1,14 +1,16 @@
 mod gpio;
 
-fn main() {
-    // Configure la broche 2 en sortie et la met à HIGH puis à LOW
-    gpio::set_pin_mode(2, gpio::Mode::Output);
-    gpio::write_pin(2, true);  // Met la broche 2 à HIGH
-    gpio::write_pin(2, false); // Met la broche 2 à LOW
+use gpio::GpioPin;
 
-    // Configure la broche 3 en entrée et lit sa valeur
-    gpio::set_pin_mode(3, gpio::Mode::Input);
-    let value = gpio::read_pin(3);
-    println!("The value of pin 3 is: {}", value);
+fn main() {
+    // Exemple d'utilisation de la HAL pour les GPIO
+
+    // Configure la pin 2 comme sortie et écrit une valeur.
+    let pin2 = GpioPin::new_output(2);
+    pin2.write(true);  // Met la pin à HIGH.
+
+    // Configure la pin 3 comme entrée et lis sa valeur.
+    let pin3 = GpioPin::new_input(3);
+    let state = pin3.read();
+    println!("State of pin 3: {}", state);
 }
-    

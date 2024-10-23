@@ -1,42 +1,55 @@
-#[derive(Debug)]
-pub enum Mode {
-    Input,
-    Output,
+// Module pour la gestion des GPIO
+pub struct GpioPin {
+    pin_number: u8,
+    is_output: bool,
 }
 
-pub fn set_pin_mode(pin: u8, mode: Mode) {
-    match mode {
-        Mode::Output => {
-            println!("Configuring pin {} as Output", pin);
-            unsafe {
-                let ddrd = 0x2A as *mut u8; // Remplace avec l'adresse correcte de DDRD
-                *ddrd |= 1 << pin; // Configure la broche `pin` en sortie
-            }
-        }
-        Mode::Input => {
-            println!("Configuring pin {} as Input", pin);
-            unsafe {
-                let ddrd = 0x2A as *mut u8; // Remplace avec l'adresse correcte de DDRD
-                *ddrd &= !(1 << pin); // Configure la broche `pin` en entrée
-            }
+impl GpioPin {
+    /// Configure la broche comme une sortie.
+    pub fn new_output(pin_number: u8) -> Self {
+        // Configuration du registre pour une sortie.
+        // À compléter avec les registres spécifiques à l'Atmega328p.
+        GpioPin {
+            pin_number,
+            is_output: true,
         }
     }
-}
 
-pub fn write_pin(pin: u8, value: bool) {
-    unsafe {
-        let portd = 0x2B as *mut u8; // Remplace avec l'adresse correcte de PORTD
-        if value {
-            *portd |= 1 << pin; // Met la broche `pin` à HIGH
+    /// Configure la broche comme une entrée.
+    pub fn new_input(pin_number: u8) -> Self {
+        // Configuration du registre pour une entrée.
+        // À compléter avec les registres spécifiques à l'Atmega328p.
+        GpioPin {
+            pin_number,
+            is_output: false,
+        }
+    }
+
+    /// Écrit une valeur sur une broche configurée en sortie.
+    pub fn write(&self, state: bool) {
+        if self.is_output {
+            // Code pour écrire l'état sur le registre.
+            // À compléter pour l'Atmega328p.
+            println!(
+                "Writing {} to pin {}",
+                if state { "HIGH" } else { "LOW" },
+                self.pin_number
+            );
         } else {
-            *portd &= !(1 << pin); // Met la broche `pin` à LOW
+            println!("Pin {} is not configured as output", self.pin_number);
         }
     }
-}
 
-pub fn read_pin(pin: u8) -> bool {
-    unsafe {
-        let pind = 0x29 as *const u8; // Remplace avec l'adresse correcte de PIND
-        (*pind & (1 << pin)) != 0 // Retourne `true` si la broche est HIGH, `false` sinon
+    /// Lit l'état de la broche configurée en entrée.
+    pub fn read(&self) -> bool {
+        if !self.is_output {
+            // Code pour lire l'état depuis le registre.
+            // À compléter pour l'Atmega328p.
+            println!("Reading state from pin {}", self.pin_number);
+            true // Remplacer par la valeur lue
+        } else {
+            println!("Pin {} is not configured as input", self.pin_number);
+            false
+        }
     }
 }
