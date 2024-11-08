@@ -14,3 +14,4 @@ fn main() {
     let state = pin3.read();
     println!("State of pin 3: {}", state);
 }
+//test de maj
