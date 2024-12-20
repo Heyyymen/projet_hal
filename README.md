@@ -8,3 +8,6 @@ No real registers are being modified here (but I saw that you were doing some re
 
 [CORRECTION USART] (Don't hesitate to remove this part)
 You didn't implement the USART feature
+
+[CORRECTION SPI] (Don't hesitate to remove this part)
+You didn't implement the SPI feature
